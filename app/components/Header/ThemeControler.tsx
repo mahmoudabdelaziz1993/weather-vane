@@ -1,64 +1,34 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 type Props = {};
 
 export default function ThemeControler({  }: Props) {
-  const [theme, setTheme] = useState("light");
-  const theme_list = [
-    "light",
-    "dark",
-    "cupcake",
-    "bumblebee",
-    "emerald",
-    "corporate",
-    "synthwave",
-    "retro",
-    "cyberpunk",
-    "valentine",
-    "halloween",
-    "garden",
-    "forest",
-    "aqua",
-    "lofi",
-    "pastel",
-    "fantasy",
-    "wireframe",
-    "black",
-    "luxury",
-    "dracula",
-    "cmyk",
-    "autumn",
-    "business",
-    "acid",
-    "lemonade",
-    "night",
-    "coffee",
-    "winter",
-    "dim",
-    "nord",
-    "sunset"
-  ];
+  const theme_list = ["cupcake", "dark", "retro", "cyberpunk", "halloween", "forest", "aqua", "dracula", "coffee"];
+  const [theme, setTheme] = useState(theme_list[0]);
   function toggleTheme(e: any): void {
     setTheme(e.target.value);
   }
-
+  const themeDropdown = useRef<HTMLDetailsElement>(null);
   // initially set the theme and "listen" for changes to apply them to the HTML tag
   useEffect(
     () => {
       if (document) {
         const html = document.querySelector("html");
-        if (html) {
+        const dropdwon = document.getElementById('themeDropdwon')
+        if (html && dropdwon) {
           html.setAttribute("data-theme", theme);
+          dropdwon.removeAttribute('open');
+          console.log(dropdwon);
         }
       }
     },
     [theme]
   );
   return (
-    <div className="dropdown dropdown-end">
-      <label tabIndex={0} className="btn m-1" onChange={toggleTheme}>
-        Theme
+    <details id="themeDropdwon" className={`dropdown dropdown-end `}>
+      <summary className="btn m-1" >
+        {theme}
         <svg
           width="12px"
           height="12px"
@@ -68,20 +38,21 @@ export default function ThemeControler({  }: Props) {
         >
           <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z" />
         </svg>
-      </label>
-      <ul tabIndex={0} className="dropdown-content z-[1] p-2 shadow-2xl bg-base-300 rounded-box w-auto">
-        {theme_list.map((themeVal: string,i: number) => (
+      </summary>
+      <ul tabIndex={0} className="dropdown-content z-[1] p-2 shadow-2xl bg-base-100 rounded-box w-auto grid gap-2">
+        {theme_list.map((themeVal: string, i: number) => (
           <li key={themeVal}>
             <input
               type="radio"
               name="theme-dropdown"
-              className="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+              className="theme-controller btn btn-sm btn-block  justify-start"
               aria-label={themeVal}
               value={themeVal}
+              onChange={toggleTheme}
             />
           </li>
         ))}
       </ul>
-    </div>
+    </details>
   );
 }

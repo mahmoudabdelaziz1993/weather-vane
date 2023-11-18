@@ -2,7 +2,6 @@ import Image from 'next/image'
 
 export default function Home() {
   return (
-   <h1>mahmoud
-     bdan</h1>
+   <h1>hay</h1>
   )
 }
