@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { CookiesProvider } from 'next-client-cookies/server'
 import Header from './components/Header/inedx'
+import Footer from './components/Footer'
+import CookieBanner from './components/CookieBanner'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,14 +20,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" data-theme="cupcake">
-      <body className={inter.className}>
+      <body className={inter.className }>
+      <div className="container flex flex-col min-h-screen mx-auto">
        <Header/>
-        <main>  
-          <CookiesProvider>
-            {children}
+         <CookiesProvider>
+          <main className='flex-grow container'> 
+              <CookieBanner/>
+              {children}
+          </main>
          </CookiesProvider>
-        </main>
-        <footer></footer>
+       
+       <Footer/>
+       </div>
         </body>
     </html>
   )
