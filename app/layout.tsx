@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import { CookiesProvider } from 'next-client-cookies/server'
+import Header from './components/Header/inedx'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,8 +17,16 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" data-theme="cupcake">
+      <body className={inter.className}>
+       <Header/>
+        <main>  
+          <CookiesProvider>
+            {children}
+         </CookiesProvider>
+        </main>
+        <footer></footer>
+        </body>
     </html>
   )
 }
