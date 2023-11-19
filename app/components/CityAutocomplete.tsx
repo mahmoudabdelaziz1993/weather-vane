@@ -33,7 +33,7 @@ export default function CityAutocomplete() {
     <div className="w-full max-w-xs mx-auto">
       <input {...getInputProps()} className="w-full px-3 py-2 text-gray-700 border rounded-md focus:outline-none focus:shadow-outline" />
       {isOpen && (
-        <ul {...getMenuProps()} className="absolute mt-1 w-full bg-white rounded-md shadow-lg">
+        <ul {...getMenuProps({},{suppressRefError:true})} className="absolute mt-1 w-full bg-white rounded-md shadow-lg">
           {inputItems.map((item, index) => (
             <li
               style={highlightedIndex === index ? { backgroundColor: '#bde4ff' } : {}}
