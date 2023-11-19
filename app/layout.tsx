@@ -24,8 +24,9 @@ export default function RootLayout({
       <div className="container flex flex-col min-h-screen mx-auto">
        <Header/>
          <CookiesProvider>
+         <CookieBanner/>
           <main className='flex-grow container'> 
-              <CookieBanner/>
+             
               {children}
           </main>
          </CookiesProvider>
