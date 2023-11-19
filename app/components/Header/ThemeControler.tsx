@@ -1,15 +1,20 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useCookies } from 'next-client-cookies';
 
 type Props = {};
 
 export default function ThemeControler({  }: Props) {
   const theme_list = ["cupcake", "dark", "retro", "cyberpunk", "halloween", "forest", "aqua", "dracula", "coffee"];
-  const [theme, setTheme] = useState(theme_list[0]);
+  
+  const cookies = useCookies();
+  const default_theme =cookies.get("Vane-Theme") ?? theme_list[0]
+  const [theme, setTheme] = useState(default_theme);
+
   function toggleTheme(e: any): void {
     setTheme(e.target.value);
   }
-  const themeDropdown = useRef<HTMLDetailsElement>(null);
+  console.log(cookies.get("Vane-Theme"))
   // initially set the theme and "listen" for changes to apply them to the HTML tag
   useEffect(
     () => {
@@ -19,11 +24,12 @@ export default function ThemeControler({  }: Props) {
         if (html && dropdwon) {
           html.setAttribute("data-theme", theme);
           dropdwon.removeAttribute('open');
-          console.log(dropdwon);
+          cookies.set('Vane-Theme', theme)
+          
         }
       }
     },
-    [theme]
+    [theme,cookies]
   );
   return (
     <details id="themeDropdwon" className={`dropdown dropdown-end `}>

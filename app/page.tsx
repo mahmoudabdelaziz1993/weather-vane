@@ -1,7 +1,10 @@
 import Image from 'next/image'
+import CityAutocomplete from './components/CityAutocomplete'
 
 export default function Home() {
   return (
-   <h1>hay</h1>
+    <>
+  <CityAutocomplete/>
+  </>
   )
 }
