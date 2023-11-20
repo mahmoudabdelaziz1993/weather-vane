@@ -1,39 +1,32 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useCookies } from 'next-client-cookies';
+import { useCookies } from "next-client-cookies";
 
-type Props = {};
-
-export default function ThemeControler({  }: Props) {
-  const theme_list = ["cupcake", "dark", "retro", "cyberpunk", "halloween", "forest", "aqua", "dracula", "coffee"];
+export default function ThemeControler() {
+  const theme_list = ["winter", "dark", "retro", "cyberpunk", "halloween", "forest", "aqua", "dracula", "coffee"];
   
   const cookies = useCookies();
-  const default_theme =cookies.get("Vane-Theme") ?? theme_list[0]
-  const [theme, setTheme] = useState(default_theme);
+  const [theme, setTheme] = useState(cookies.get("Vane-Theme") ?? theme_list[0]);
 
-  function toggleTheme(e: any): void {
-    setTheme(e.target.value);
+  function toggleTheme(theme: string): void {
+    setTheme(theme);
+    cookies.set("Vane-Theme", theme);
   }
-  console.log(cookies.get("Vane-Theme"))
-  // initially set the theme and "listen" for changes to apply them to the HTML tag
-  useEffect(
-    () => {
-      if (document) {
-        const html = document.querySelector("html");
-        const dropdwon = document.getElementById('themeDropdwon')
-        if (html && dropdwon) {
-          html.setAttribute("data-theme", theme);
-          dropdwon.removeAttribute('open');
-          cookies.set('Vane-Theme', theme)
-          
-        }
+
+  useEffect(() => {
+    if (document) {
+      const html = document.querySelector("html");
+      const dropdown = document.getElementById("themeDropdwon");
+      if (html && dropdown) {
+        html.setAttribute("data-theme", theme);
+        dropdown.removeAttribute("open");
       }
-    },
-    [theme,cookies]
-  );
+    }
+  }, [theme]);
+
   return (
     <details id="themeDropdwon" className={`dropdown dropdown-end `}>
-      <summary className="btn m-1" >
+      <summary className="btn gap-2 btn-primary btn-outline">
         {theme}
         <svg
           width="12px"
@@ -54,7 +47,7 @@ export default function ThemeControler({  }: Props) {
               className="theme-controller btn btn-sm btn-block  justify-start"
               aria-label={themeVal}
               value={themeVal}
-              onChange={toggleTheme}
+              onChange={()=>toggleTheme(themeVal)}
             />
           </li>
         ))}
