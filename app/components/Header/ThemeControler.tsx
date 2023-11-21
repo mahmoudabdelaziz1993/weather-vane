@@ -25,7 +25,7 @@ export default function ThemeControler() {
   }, [theme]);
 
   return (
-    <details id="themeDropdwon" className={`dropdown dropdown-end `}>
+    <details id="themeDropdwon" className={`dropdown dropdown-end capitalize`}>
       <summary className="btn gap-2 btn-primary btn-outline">
         {theme}
         <svg
@@ -44,7 +44,7 @@ export default function ThemeControler() {
             <input
               type="radio"
               name="theme-dropdown"
-              className="theme-controller btn btn-sm btn-block  justify-start"
+              className="theme-controller btn btn-sm btn-block  justify-start capitalize"
               aria-label={themeVal}
               value={themeVal}
               onChange={()=>toggleTheme(themeVal)}
