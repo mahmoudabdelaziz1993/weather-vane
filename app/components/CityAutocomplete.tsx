@@ -1,18 +1,33 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useCombobox } from "downshift";
+import { Place } from "@/Types";
+import { debounce } from "lodash";
 
 export default function CityAutocomplete() {
-  const [inputItems, setInputItems] = useState([]);
+  const [inputItems, setInputItems] = useState<Place[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
-  const { isOpen, getMenuProps, getInputProps, highlightedIndex, getItemProps } = useCombobox({
+  const [selectedItems, setSelectedItems] = useState<Place[]>([]);
+  // Create debounced function outside of your event handler
+const debouncedSetInputValue = useCallback(debounce((value) => setInputValue(value), 500), []); 
+ const { isOpen, getMenuProps, getInputProps, highlightedIndex, getItemProps } = useCombobox({
     items: inputItems,
+    itemToString: item => (item ? item.display_name : ""),
     onInputValueChange: ({ inputValue }) => {
-      inputValue && setInputValue(inputValue);
+      if (inputValue) {
+        // Call the debounced function inside your event handler
+        debouncedSetInputValue(inputValue);
+      }
+    },
+    onSelectedItemChange: ({ selectedItem }) => {
+      if (selectedItem && !selectedItems.some(item => item.place_id === selectedItem.place_id)) {
+        setSelectedItems(prev => [...prev, selectedItem]);
+      }
     }
   });
+  // Declare and initialize the ref variable
+  const ref = useRef<HTMLUListElement>(null);
 
   useEffect(
     () => {
@@ -20,8 +35,11 @@ export default function CityAutocomplete() {
       if (inputValue.length > 2) {
         fetch(`https://geocode.maps.co/search?q=${inputValue}`)
           .then(response => response.json())
-          .then(data => {
-            setInputItems(data.map((result: any) => result.display_name));
+          .then((data: Place[]) => {
+            setInputItems(data.map(result => result));
+          })
+          .catch(error => {
+            console.error("Error fetching data:", error);
           })
           .finally(() => {
             setIsLoading(false); // Set loading state to false after the fetch is complete
@@ -30,11 +48,16 @@ export default function CityAutocomplete() {
     },
     [inputValue]
   );
-
+  useEffect(
+    () => {
+      console.log("selectedItem", selectedItems);
+    },
+    [selectedItems]
+  );
   return (
-    <div className="w-full max-w-xs mx-auto  ">
-      <div className="prose prose-lg">
-        <label className="label">
+    <div className="absolute w-full max-w-xs p-2 h-max z-10 ">
+      <div className="prose md:prose-lg prose-base">
+        <label className="label" htmlFor="place">
           <span className="flex gap-2 items-center">
             {" "}
             <svg
@@ -55,15 +78,16 @@ export default function CityAutocomplete() {
           </span>
         </label>
         <input
-          {...getInputProps()}
+          {...getInputProps({})}
           type="text"
+          id="place"
           placeholder="Type your city here"
           className="input input-bordered input-primary bg-base-200 w-full max-w-xs"
         />
       </div>
       {isOpen && (
         <ul
-          {...getMenuProps({}, { suppressRefError: true })}
+          {...getMenuProps({ ref }, { suppressRefError: true })}
           className=" mt-2 menu bg-base-300 w-full max-w-xs  max-h-40 overflow-hidden overflow-y-auto flex-nowrap rounded-box gap-2 p-2 "
         >
           {isLoading && (
@@ -76,8 +100,8 @@ export default function CityAutocomplete() {
           {inputItems.length > 0 &&
             !isLoading &&
             inputItems.map((item, index) => (
-              <li key={`${item}${index}`} {...getItemProps({ item, index })}>
-                <a className={`${highlightedIndex === index ? "active" : ""}`}> {item}</a>
+              <li {...getItemProps({ item, index })} key={`${item.place_id}`}>
+                <a className={`${highlightedIndex === index ? "active" : ""}`}> {item.display_name}</a>
               </li>
             ))}
         </ul>

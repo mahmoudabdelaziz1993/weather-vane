@@ -22,16 +22,18 @@ export default function RootLayout({
     <html lang="en" data-theme="cupcake">
       <body className={cairo.className }>
       <div className="flex flex-col min-h-screen mx-auto max-w-7xl">
-       <Header/>
+     
          <CookiesProvider>
+         <Header/>
          <CookieBanner/>
           <main className='flex-grow container grid'> 
              
               {children}
           </main>
+          <Footer/>
          </CookiesProvider>
        
-       <Footer/>
+       
        </div>
         </body>
     </html>

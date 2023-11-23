@@ -2,7 +2,7 @@ import Link from "next/link";
 import * as React from "react";
 import { SVGProps } from "react";
 const Logo = (props: SVGProps<SVGSVGElement>) => (
-  <Link href={'/'} className="btn btn-circle ">
+  <Link href={'/'} className="btn btn-circle btn-link">
     <svg {...props} xmlns="http://www.w3.org/2000/svg" width="48" height="48"
     className="active:animate-spin duration-300">
       <path fill="none" d="M0 0h48v48H0z" />
