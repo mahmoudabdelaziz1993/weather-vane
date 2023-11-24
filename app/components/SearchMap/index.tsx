@@ -5,6 +5,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import CityAutocomplete from "./CityAutocomplete";
 import MapComponent from "./BingMap";
+import chroma from "chroma-js";
 
 type Props = {};
 
@@ -23,6 +24,24 @@ export default function SearchMap({  }: Props) {
     importance: 0.7960286135601556
   });
   const cookies = useCookies();
+  const primaryColor =
+  document ?
+  chroma
+    .oklch(
+      Number(getComputedStyle(document.documentElement)
+        .getPropertyValue("--p")
+        .trim()
+        .split(" ")[0]), // Lightness argument
+      Number(getComputedStyle(document.documentElement)
+        .getPropertyValue("--p")
+        .trim()
+        .split(" ")[1]), // Chroma argument
+      Number(getComputedStyle(document.documentElement)
+        .getPropertyValue("--p")
+        .trim()
+        .split(" ")[2]) // Hue argument
+    )
+    .hex() : "red";
 
   useEffect(
     () => {
@@ -35,7 +54,7 @@ export default function SearchMap({  }: Props) {
   return (
     <div className="grid  w-full  relative ">
       <CityAutocomplete selectedItems={selectedItems} setSelectedItems={setSelectedItems} />
-      <MapComponent lat={lastSelectedItems?.lat} lon={lastSelectedItems?.lon}  />
+      <MapComponent lat={lastSelectedItems?.lat} lon={lastSelectedItems?.lon} display_name={lastSelectedItems?.display_name} primaryColor={primaryColor} />
     </div>
   );
 }

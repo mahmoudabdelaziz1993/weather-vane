@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Cairo } from 'next/font/google'
 import './globals.css'
 import { CookiesProvider } from 'next-client-cookies/server'
-import Header from './components/Header/inedx'
+import Header from './components/Header'
 import Footer from './components/Footer'
 import CookieBanner from './components/CookieBanner'
 
