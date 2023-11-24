@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useCookies } from "next-client-cookies";
+import chroma from "chroma-js";
 
 export default function ThemeControler() {
   const theme_list = ["winter", "dark", "retro", "cyberpunk", "halloween", "forest", "aqua", "dracula", "coffee"];
@@ -16,15 +17,34 @@ export default function ThemeControler() {
   useEffect(
     () => {
       if (document) {
+      
         const html = document.querySelector("html");
         const dropdown = document.getElementById("themeDropdwon");
         if (html && dropdown) {
           html.setAttribute("data-theme", theme);
           dropdown.removeAttribute("open");
         }
+        const primary =
+        chroma
+          .oklch(
+            Number(getComputedStyle(document.documentElement)
+              .getPropertyValue("--p")
+              .trim()
+              .split(" ")[0]), // Lightness argument
+            Number(getComputedStyle(document.documentElement)
+              .getPropertyValue("--p")
+              .trim()
+              .split(" ")[1]), // Chroma argument
+            Number(getComputedStyle(document.documentElement)
+              .getPropertyValue("--p")
+              .trim()
+              .split(" ")[2]) // Hue argument
+          )
+          .hex() 
+          cookies.set("primaryColor", primary, { path: "/" });
       }
     },
-    [theme]
+    [theme,cookies]
   );
 
   return (

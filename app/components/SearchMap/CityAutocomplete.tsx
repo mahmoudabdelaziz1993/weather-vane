@@ -6,11 +6,12 @@ import { debounce } from "lodash";
 import { useCookies } from "next-client-cookies";
 type Props = { selectedItems: Place[]; setSelectedItems: React.Dispatch<React.SetStateAction<Place[]>> };
 export default function CityAutocomplete({ selectedItems, setSelectedItems }: Props) {
+  const cookies = useCookies();
+  const selected =cookies.get('selectedItem') &&cookies.get('selectedItem') !== "undefined" ? JSON.parse(cookies.get('selectedItem')!).display_name:"";
   const [inputItems, setInputItems] = useState<Place[]>([]);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(selected );
   const [isLoading, setIsLoading] = useState(false);
   // const [selectedItems, setSelectedItems] = useState<Place[]>([]);
-  // const cookies = useCookies();
 
   // Create debounced function outside of your event handler
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -59,7 +60,7 @@ export default function CityAutocomplete({ selectedItems, setSelectedItems }: Pr
   //   [selectedItems, cookies]
   // );
   return (
-    <div className="absolute top-4 w-full md:max-w-xs max-w-[280px] p-2 h-max z-10 card  backdrop-blur-lg m-2">
+    <div className="absolute top-4 w-full md:max-w-xs max-w-[280px] p-2 h-max z-10 card shadow-lg  backdrop-blur-lg m-2">
       <div className="prose md:prose-lg prose-base text-base-content   ">
         <label className="label" htmlFor="place">
           <span className="flex gap-2 items-center">

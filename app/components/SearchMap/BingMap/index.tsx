@@ -41,7 +41,7 @@ export default function MapComponent({ lat, lon, display_name ,primaryColor}: Pr
           },
           "polygonStyle" :{
             strokeColor: primaryColor,
-            strokeThickness: 3,
+            strokeThickness: 1.5,
             fillColor: "transparent" // or "none"
 
           }
