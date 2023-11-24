@@ -1,10 +1,11 @@
-import Image from "next/image";
 import CityAutocomplete from "./components/CityAutocomplete";
+import MapComponent from "./components/BingMap";
 
 export default function Home() {
   return (
-    <div className="grid  w-full p-2 relative ">
+    <div className="grid  w-full  relative ">
       <CityAutocomplete />
+      <MapComponent/>
     </div>
   );
 }

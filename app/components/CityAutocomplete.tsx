@@ -58,7 +58,7 @@ export default function CityAutocomplete() {
     [selectedItems, cookies]
   );
   return (
-    <div className="absolute w-full max-w-xs p-2 h-max z-10 ">
+    <div className="absolute w-full max-w-xs p-2 h-max z-10 card glass m-2">
       <div className="prose md:prose-lg prose-base">
         <label className="label" htmlFor="place">
           <span className="flex gap-2 items-center">
