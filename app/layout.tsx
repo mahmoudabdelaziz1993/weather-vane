@@ -1,10 +1,12 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Cairo } from 'next/font/google'
 import './globals.css'
 import { CookiesProvider } from 'next-client-cookies/server'
 import Header from './components/Header/inedx'
+import Footer from './components/Footer'
+import CookieBanner from './components/CookieBanner'
 
-const inter = Inter({ subsets: ['latin'] })
+const cairo = Cairo({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -18,14 +20,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" data-theme="cupcake">
-      <body className={inter.className}>
+      <body className={cairo.className }>
+      <div className="flex flex-col min-h-screen mx-auto max-w-7xl">
        <Header/>
-        <main>  
-          <CookiesProvider>
-            {children}
+         <CookiesProvider>
+         <CookieBanner/>
+          <main className='flex-grow container grid'> 
+             
+              {children}
+          </main>
          </CookiesProvider>
-        </main>
-        <footer></footer>
+       
+       <Footer/>
+       </div>
         </body>
     </html>
   )
