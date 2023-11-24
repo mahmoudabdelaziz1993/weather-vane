@@ -1,10 +1,9 @@
-import Image from "next/image";
-import CityAutocomplete from "./components/CityAutocomplete";
+
+import SearchMap from "./components/SearchMap";
 
 export default function Home() {
   return (
-    <div className="grid  w-full p-2 ">
-      <CityAutocomplete />
-    </div>
+    <SearchMap/>
+   
   );
 }

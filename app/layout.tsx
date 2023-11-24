@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Cairo } from 'next/font/google'
 import './globals.css'
 import { CookiesProvider } from 'next-client-cookies/server'
-import Header from './components/Header/inedx'
+import Header from './components/Header'
 import Footer from './components/Footer'
 import CookieBanner from './components/CookieBanner'
 
@@ -22,16 +22,18 @@ export default function RootLayout({
     <html lang="en" data-theme="cupcake">
       <body className={cairo.className }>
       <div className="flex flex-col min-h-screen mx-auto max-w-7xl">
-       <Header/>
+     
          <CookiesProvider>
+         <Header/>
          <CookieBanner/>
-          <main className='flex-grow container grid'> 
+          <main className='flex-grow  grid'> 
              
               {children}
           </main>
+          <Footer/>
          </CookiesProvider>
        
-       <Footer/>
+       
        </div>
         </body>
     </html>

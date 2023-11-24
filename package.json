@@ -9,14 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "chroma-js": "^2.4.2",
     "downshift": "^8.2.3",
+    "lodash": "^4.17.21",
     "next": "14.0.3",
     "next-client-cookies": "^1.1.0",
     "react": "^18",
+    "react-bingmaps": "^3.6.1",
     "react-dom": "^18"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
+    "@types/chroma-js": "^2.4.3",
+    "@types/lodash": "^4.14.202",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
