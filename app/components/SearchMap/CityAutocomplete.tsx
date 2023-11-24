@@ -4,15 +4,16 @@ import { useCombobox } from "downshift";
 import { Place } from "@/Types";
 import { debounce } from "lodash";
 import { useCookies } from "next-client-cookies";
-
-export default function CityAutocomplete() {
+type Props = { selectedItems: Place[]; setSelectedItems: React.Dispatch<React.SetStateAction<Place[]>> };
+export default function CityAutocomplete({ selectedItems, setSelectedItems }: Props) {
   const [inputItems, setInputItems] = useState<Place[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedItems, setSelectedItems] = useState<Place[]>([]);
-  const cookies = useCookies();
+  // const [selectedItems, setSelectedItems] = useState<Place[]>([]);
+  // const cookies = useCookies();
 
   // Create debounced function outside of your event handler
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSetInputValue = useCallback(debounce(value => setInputValue(value), 500), []);
   const { isOpen, getMenuProps, getInputProps, highlightedIndex, getItemProps } = useCombobox({
     items: inputItems,
@@ -50,16 +51,16 @@ export default function CityAutocomplete() {
     },
     [inputValue]
   );
-  useEffect(
-    () => {
-      console.log("selectedItem", selectedItems.map(item => item.display_name));
-      cookies.set("selectedItems", JSON.stringify(selectedItems), { path: "/" });
-    },
-    [selectedItems, cookies]
-  );
+  // useEffect(
+  //   () => {
+  //     console.log("selectedItem", selectedItems);
+  //     cookies.set("selectedItems", JSON.stringify(selectedItems), { path: "/" });
+  //   },
+  //   [selectedItems, cookies]
+  // );
   return (
     <div className="absolute w-full max-w-xs p-2 h-max z-10 card glass m-2">
-      <div className="prose md:prose-lg prose-base">
+      <div className="prose md:prose-lg prose-base text-base-content">
         <label className="label" htmlFor="place">
           <span className="flex gap-2 items-center">
             {" "}
@@ -85,7 +86,7 @@ export default function CityAutocomplete() {
           type="text"
           id="place"
           placeholder="Type your city here"
-          className="input input-bordered input-primary bg-base-200 w-full max-w-xs"
+          className="input input-bordered input-primary bg-base-200 text-base-content w-full max-w-xs"
         />
       </div>
       {isOpen && (

@@ -1,11 +1,9 @@
-import CityAutocomplete from "./components/CityAutocomplete";
-import MapComponent from "./components/BingMap";
+
+import SearchMap from "./components/SearchMap";
 
 export default function Home() {
   return (
-    <div className="grid  w-full  relative ">
-      <CityAutocomplete />
-      <MapComponent/>
-    </div>
+    <SearchMap/>
+   
   );
 }

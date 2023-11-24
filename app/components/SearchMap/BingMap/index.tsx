@@ -1,13 +1,16 @@
 "use client"
 import React from 'react';
 import { ReactBingmaps } from 'react-bingmaps';
-
-export default function MapComponent() {
+type Props = {
+  lat: string;
+  lon: string;
+};
+export default function MapComponent({ lat,lon }: Props) {
   return (
     <ReactBingmaps 
       bingmapKey={process.env.NEXT_PUBLIC_BING_API_KEY} 
-      center={[51.5074, 0.1278]} 
-      mapTypeId={"aerial"} 
+      center={[Number(lat),Number(lon)]} 
+      mapTypeId={"streetside"} 
       zoom={10} 
     />
   );

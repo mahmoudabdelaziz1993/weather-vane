@@ -1,0 +1,41 @@
+"use client";
+import { Place } from "@/Types";
+import { useCookies } from "next-client-cookies";
+import React, { useEffect } from "react";
+import { useState } from "react";
+import CityAutocomplete from "./CityAutocomplete";
+import MapComponent from "./BingMap";
+
+type Props = {};
+
+export default function SearchMap({  }: Props) {
+  const [selectedItems, setSelectedItems] = useState<Place[]>([]);
+  const [lastSelectedItems, setLastSelectedItems] = useState<Place>({
+    place_id: 287478948,
+    licence: "Data © OpenStreetMap contributors, ODbL 1.0. https://osm.org/copyright",
+    osm_id: 5466227,
+    boundingbox: ["29.7483062", "30.3209168", "31.2200331", "31.9090054"],
+    lat: "30.0443879",
+    lon: "31.2357257",
+    display_name: "Cairo, Cairo Governorate, Egypt",
+    class: "place",
+    type: "city",
+    importance: 0.7960286135601556
+  });
+  const cookies = useCookies();
+
+  useEffect(
+    () => {
+      console.log("selectedItem", selectedItems);
+      setLastSelectedItems(selectedItems.slice(-1)[0]);
+      cookies.set("selectedItems", JSON.stringify(selectedItems), { path: "/" });
+    },
+    [selectedItems, cookies]
+  );
+  return (
+    <div className="grid  w-full  relative ">
+      <CityAutocomplete selectedItems={selectedItems} setSelectedItems={setSelectedItems} />
+      <MapComponent lat={lastSelectedItems?.lat} lon={lastSelectedItems?.lon}  />
+    </div>
+  );
+}

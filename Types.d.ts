@@ -3,8 +3,8 @@
 export type Place = {
   place_id: number;
   licence: string;
-  powered_by: PoweredBy;
-  osm_type: OsmType;
+  powered_by?: PoweredBy;
+  osm_type?: OsmType;
   osm_id: number;
   boundingbox: string[];
   lat: string;
