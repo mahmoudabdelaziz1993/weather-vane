@@ -3,20 +3,22 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useCombobox } from "downshift";
 import { Place } from "@/Types";
 import { debounce } from "lodash";
+import { useCookies } from "next-client-cookies";
 
 export default function CityAutocomplete() {
   const [inputItems, setInputItems] = useState<Place[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [selectedItems, setSelectedItems] = useState<Place[]>([]);
+  const cookies = useCookies();
+
   // Create debounced function outside of your event handler
-const debouncedSetInputValue = useCallback(debounce((value) => setInputValue(value), 500), []); 
- const { isOpen, getMenuProps, getInputProps, highlightedIndex, getItemProps } = useCombobox({
+  const debouncedSetInputValue = useCallback(debounce(value => setInputValue(value), 500), []);
+  const { isOpen, getMenuProps, getInputProps, highlightedIndex, getItemProps } = useCombobox({
     items: inputItems,
     itemToString: item => (item ? item.display_name : ""),
     onInputValueChange: ({ inputValue }) => {
       if (inputValue) {
-        // Call the debounced function inside your event handler
         debouncedSetInputValue(inputValue);
       }
     },
@@ -50,9 +52,10 @@ const debouncedSetInputValue = useCallback(debounce((value) => setInputValue(val
   );
   useEffect(
     () => {
-      console.log("selectedItem", selectedItems);
+      console.log("selectedItem", selectedItems.map(item => item.display_name));
+      cookies.set("selectedItems", JSON.stringify(selectedItems), { path: "/" });
     },
-    [selectedItems]
+    [selectedItems, cookies]
   );
   return (
     <div className="absolute w-full max-w-xs p-2 h-max z-10 ">
