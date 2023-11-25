@@ -4,7 +4,7 @@ import { useCookies } from "next-client-cookies";
 import chroma from "chroma-js";
 
 export default function ThemeControler() {
-  const theme_list = ["winter", "dark", "retro", "cyberpunk", "halloween", "forest", "aqua", "dracula", "coffee"];
+  const theme_list = ["emerald", "dark", "retro", "cyberpunk", "halloween", "forest", "aqua", "dracula", "coffee"];
 
   const cookies = useCookies();
   const [theme, setTheme] = useState(cookies.get("Vane-Theme") || theme_list[0]);

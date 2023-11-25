@@ -80,8 +80,8 @@ export default function CityAutocomplete({ selectedItems, setSelectedItems, last
 
  
   return (
-    <div className="absolute top-4 w-full md:max-w-xs max-w-[280px] p-2 h-max z-10 card shadow-lg  backdrop-blur-lg m-2">
-      <div className="prose md:prose-lg prose-base text-primary-content   ">
+    <div className=" w-full md:max-w-xs max-w-[280px] p-2 h-max z-10 card shadow-lg  backdrop-blur-xl ">
+      <div className="prose md:prose-lg prose-base text-neutral   ">
         <label className="label" htmlFor="place">
           <span className="flex gap-2 items-center">
             {" "}
@@ -113,7 +113,7 @@ export default function CityAutocomplete({ selectedItems, setSelectedItems, last
       {isOpen && (
         <ul
           {...getMenuProps({ ref }, { suppressRefError: true })}
-          className=" mt-2 menu bg-base-300 w-full max-w-xs  max-h-40 overflow-hidden overflow-y-auto flex-nowrap rounded-box gap-2 p-2 "
+          className=" mt-2 menu bg-base-200 text-base-content w-full max-w-xs  max-h-40 overflow-hidden overflow-y-auto flex-nowrap rounded-box gap-2 p-2 "
         >
           {isLoading && (
             <li>

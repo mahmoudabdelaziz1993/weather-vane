@@ -4,7 +4,7 @@ import { useCookies } from "next-client-cookies";
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import CityAutocomplete from "./CityAutocomplete";
 import MapComponent from "./BingMap";
-
+import  './SearchMap.css'
 type Props = {};
 const MemoizedCityAutocomplete = React.memo(CityAutocomplete);
 const MemoizedMapComponent = React.memo(MapComponent);
@@ -65,6 +65,15 @@ export default function SearchMap({}: Props) {
 
   return (
     <div className="grid w-full relative">
-      <MemoizedCityAutocomplete selectedItems={selectedItems} setSelectedItems={setSelectedItems} lastSelectedItem={lastSelectedItem} setLastSelectedItem={setLastSelectedItem} />
-      <MemoizedMapComponent lat={lastSelectedItem?.lat} lon={lastSelectedItem?.lon} display_name={lastSelectedItem?.display_name} primaryColor={primaryColor} secondaryColor={secondaryColor} pins={selectedItems} />
+
+
+
+<div className="card image-full rounded-none">
+  <figure className="before:bg-transparent "><MemoizedMapComponent lat={lastSelectedItem?.lat} lon={lastSelectedItem?.lon} display_name={lastSelectedItem?.display_name} primaryColor={primaryColor} secondaryColor={secondaryColor} pins={selectedItems} />
+</figure>
+  <div className="card-body ">
+  <MemoizedCityAutocomplete selectedItems={selectedItems} setSelectedItems={setSelectedItems} lastSelectedItem={lastSelectedItem} setLastSelectedItem={setLastSelectedItem} />
+
+  </div>
+</div>
     </div>);}
