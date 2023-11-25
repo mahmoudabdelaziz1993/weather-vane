@@ -1,20 +1,34 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useCombobox } from "downshift";
 import { Place } from "@/Types";
-import { debounce } from "lodash";
-import { useCookies } from "next-client-cookies";
-type Props = { selectedItems: Place[]; setSelectedItems: React.Dispatch<React.SetStateAction<Place[]>> };
-export default function CityAutocomplete({ selectedItems, setSelectedItems }: Props) {
+import debounce from "lodash/debounce";
+type Props = {
+  selectedItems: Place[];
+  setSelectedItems: React.Dispatch<React.SetStateAction<Place[]>>;
+  lastSelectedItem: Place;
+  setLastSelectedItem: React.Dispatch<React.SetStateAction<Place>>;
+};
+/**
+ * Renders an autocomplete input component for cities.
+ *
+ * @param {Props} selectedItems - the currently selected items
+ * @param {Function} setSelectedItems - a function to set the selected items
+ * @param {Place} lastSelectedItem - the last selected item
+ * @param {Function} setLastSelectedItem - a function to set the last selected item
+ * @return {JSX.Element} The rendered autocomplete input component
+ */
+export default function CityAutocomplete({ selectedItems, setSelectedItems, lastSelectedItem, setLastSelectedItem }: Props) {
   const [inputItems, setInputItems] = useState<Place[]>([]);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(lastSelectedItem.display_name);
   const [isLoading, setIsLoading] = useState(false);
-  // const [selectedItems, setSelectedItems] = useState<Place[]>([]);
-  // const cookies = useCookies();
+  const API_ENDPOINT = "https://geocode.maps.co/search?q=";
 
   // Create debounced function outside of your event handler
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSetInputValue = useCallback(debounce(value => setInputValue(value), 500), []);
+  const selectedItemsSet = new Set(selectedItems.map(item => item.place_id));
+
   const { isOpen, getMenuProps, getInputProps, highlightedIndex, getItemProps } = useCombobox({
     items: inputItems,
     itemToString: item => (item ? item.display_name : ""),
@@ -24,43 +38,50 @@ export default function CityAutocomplete({ selectedItems, setSelectedItems }: Pr
       }
     },
     onSelectedItemChange: ({ selectedItem }) => {
-      if (selectedItem && !selectedItems.some(item => item.place_id === selectedItem.place_id)) {
-        setSelectedItems(prev => [...prev, selectedItem]);
+      if (selectedItem) {
+        const isExist = selectedItemsSet.has(selectedItem.place_id);
+        if (!isExist) {
+          setSelectedItems(prev => [...prev, selectedItem]);
+          setLastSelectedItem(selectedItem);
+        }
+        if (isExist) {
+          setLastSelectedItem(selectedItem);
+        }
       }
     }
   });
   // Declare and initialize the ref variable
   const ref = useRef<HTMLUListElement>(null);
-
+  const memoizedFetch = useCallback(
+    debounce((Value: string) => {
+      fetch(`${API_ENDPOINT}${Value}`)
+        .then(response => response.json())
+        .then((data: Place[]) => {
+          setInputItems(data.map(result => result));
+        })
+        .catch(error => {
+          console.error("Error fetching data:", error);
+        })
+        .finally(() => {
+          setIsLoading(false); // Set loading state to false after the fetch is complete
+        });
+    }, 500),
+    []
+  );
   useEffect(
     () => {
       setIsLoading(true); // Set loading state to true
       if (inputValue.length > 2) {
-        fetch(`https://geocode.maps.co/search?q=${inputValue}`)
-          .then(response => response.json())
-          .then((data: Place[]) => {
-            setInputItems(data.map(result => result));
-          })
-          .catch(error => {
-            console.error("Error fetching data:", error);
-          })
-          .finally(() => {
-            setIsLoading(false); // Set loading state to false after the fetch is complete
-          });
+        memoizedFetch(inputValue);
       }
     },
-    [inputValue]
+    [inputValue, memoizedFetch]
   );
-  // useEffect(
-  //   () => {
-  //     console.log("selectedItem", selectedItems);
-  //     cookies.set("selectedItems", JSON.stringify(selectedItems), { path: "/" });
-  //   },
-  //   [selectedItems, cookies]
-  // );
+
+ 
   return (
-    <div className="absolute top-4 w-full md:max-w-xs max-w-[280px] p-2 h-max z-10 card  backdrop-blur-lg m-2">
-      <div className="prose md:prose-lg prose-base text-base-content   ">
+    <div className=" w-full md:max-w-xs max-w-[280px] p-2 h-max z-10 card shadow-lg  backdrop-blur-md backdrop-brightness-75	hover:backdrop-brightness-50 ">
+      <div className="prose md:prose-lg prose-base text-neutral-content   ">
         <label className="label" htmlFor="place">
           <span className="flex gap-2 items-center">
             {" "}
@@ -92,7 +113,7 @@ export default function CityAutocomplete({ selectedItems, setSelectedItems }: Pr
       {isOpen && (
         <ul
           {...getMenuProps({ ref }, { suppressRefError: true })}
-          className=" mt-2 menu bg-base-300 w-full max-w-xs  max-h-40 overflow-hidden overflow-y-auto flex-nowrap rounded-box gap-2 p-2 "
+          className=" mt-2 menu bg-base-200 text-base-content w-full max-w-xs  max-h-40 overflow-hidden overflow-y-auto flex-nowrap rounded-box gap-2 p-2 "
         >
           {isLoading && (
             <li>
@@ -104,8 +125,8 @@ export default function CityAutocomplete({ selectedItems, setSelectedItems }: Pr
           {inputItems.length > 0 &&
             !isLoading &&
             inputItems.map((item, index) => (
-              <li {...getItemProps({ item, index })} key={`${item.place_id}`}>
-                <a className={`${highlightedIndex === index ? "active" : ""}`}> {item.display_name}</a>
+              <li key={item.display_name} {...getItemProps({ item, index })} >
+                <a key={`${item.place_id}`} className={`${highlightedIndex === index ? "active" : ""}`}> {item.display_name}</a>
               </li>
             ))}
         </ul>

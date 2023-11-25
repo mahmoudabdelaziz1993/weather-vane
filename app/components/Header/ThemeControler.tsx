@@ -1,9 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useCookies } from "next-client-cookies";
+import chroma from "chroma-js";
 
 export default function ThemeControler() {
-  const theme_list = ["winter", "dark", "retro", "cyberpunk", "halloween", "forest", "aqua", "dracula", "coffee"];
+  const theme_list = ["emerald", "dark", "retro", "cyberpunk", "halloween", "forest", "aqua", "dracula", "coffee"];
 
   const cookies = useCookies();
   const [theme, setTheme] = useState(cookies.get("Vane-Theme") || theme_list[0]);
@@ -22,9 +23,56 @@ export default function ThemeControler() {
           html.setAttribute("data-theme", theme);
           dropdown.removeAttribute("open");
         }
+        const primary = chroma
+          .oklch(
+            Number(
+              getComputedStyle(document.documentElement)
+                .getPropertyValue("--p")
+                .trim()
+                .split(" ")[0]
+            ), // Lightness argument
+            Number(
+              getComputedStyle(document.documentElement)
+                .getPropertyValue("--p")
+                .trim()
+                .split(" ")[1]
+            ), // Chroma argument
+            Number(
+              getComputedStyle(document.documentElement)
+                .getPropertyValue("--p")
+                .trim()
+                .split(" ")[2]
+            ) // Hue argument
+          )
+          .hex();
+          const secondary = chroma
+          .oklch(
+            Number(
+              getComputedStyle(document.documentElement)
+                .getPropertyValue("--s")
+                .trim()
+                .split(" ")[0]
+            ), // Lightness argument
+            Number(
+              getComputedStyle(document.documentElement)
+                .getPropertyValue("--s")
+                .trim()
+                .split(" ")[1]
+            ), // Chroma argument
+            Number(
+              getComputedStyle(document.documentElement)
+                .getPropertyValue("--s")
+                .trim()
+                .split(" ")[2]
+            ) // Hue argument
+          )
+          .hex();
+        cookies.set("primaryColor", primary, { path: "/" });
+        cookies.set("secondaryColor", secondary, { path: "/" });
+
       }
     },
-    [theme]
+    [theme, cookies]
   );
 
   return (
