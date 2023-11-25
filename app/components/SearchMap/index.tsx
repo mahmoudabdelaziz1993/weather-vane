@@ -21,16 +21,25 @@ export default function SearchMap({}: Props) {
       return JSON.parse(selectedItem);
     } else {
       return {
-        place_id: 287478948,
-        licence: "Data © OpenStreetMap contributors, ODbL 1.0. https://osm.org/copyright",
-        osm_id: 5466227,
-        boundingbox: ["29.7483062", "30.3209168", "31.2200331", "31.9090054"],
-        lat: "30.0443879",
-        lon: "31.2357257",
-        display_name: "Cairo, Cairo Governorate, Egypt",
-        class: "place",
-        type: "city",
-        importance: 0.7960286135601556
+        
+          "place_id": 253638002,
+          "licence": "Data © OpenStreetMap contributors, ODbL 1.0. https://osm.org/copyright",
+          "powered_by": "Map Maker: https://maps.co",
+          "osm_type": "way",
+          "osm_id": 754208062,
+          "boundingbox": [
+            "31.0809726",
+            "31.1440654",
+            "29.7380042",
+            "29.8262517"
+          ],
+          "lat": "31.11260175",
+          "lon": "29.77672243708097",
+          "display_name": "Al Agamy, Al Hanuvil, Alexandria Governorate, Egypt",
+          "class": "place",
+          "type": "neighbourhood",
+          "importance": 0.96
+        
       };
     }
   }, [cookies]);
