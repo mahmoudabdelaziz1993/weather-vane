@@ -17,34 +17,62 @@ export default function ThemeControler() {
   useEffect(
     () => {
       if (document) {
-      
         const html = document.querySelector("html");
         const dropdown = document.getElementById("themeDropdwon");
         if (html && dropdown) {
           html.setAttribute("data-theme", theme);
           dropdown.removeAttribute("open");
         }
-        const primary =
-        chroma
+        const primary = chroma
           .oklch(
-            Number(getComputedStyle(document.documentElement)
-              .getPropertyValue("--p")
-              .trim()
-              .split(" ")[0]), // Lightness argument
-            Number(getComputedStyle(document.documentElement)
-              .getPropertyValue("--p")
-              .trim()
-              .split(" ")[1]), // Chroma argument
-            Number(getComputedStyle(document.documentElement)
-              .getPropertyValue("--p")
-              .trim()
-              .split(" ")[2]) // Hue argument
+            Number(
+              getComputedStyle(document.documentElement)
+                .getPropertyValue("--p")
+                .trim()
+                .split(" ")[0]
+            ), // Lightness argument
+            Number(
+              getComputedStyle(document.documentElement)
+                .getPropertyValue("--p")
+                .trim()
+                .split(" ")[1]
+            ), // Chroma argument
+            Number(
+              getComputedStyle(document.documentElement)
+                .getPropertyValue("--p")
+                .trim()
+                .split(" ")[2]
+            ) // Hue argument
           )
-          .hex() 
-          cookies.set("primaryColor", primary, { path: "/" });
+          .hex();
+          const secondary = chroma
+          .oklch(
+            Number(
+              getComputedStyle(document.documentElement)
+                .getPropertyValue("--s")
+                .trim()
+                .split(" ")[0]
+            ), // Lightness argument
+            Number(
+              getComputedStyle(document.documentElement)
+                .getPropertyValue("--s")
+                .trim()
+                .split(" ")[1]
+            ), // Chroma argument
+            Number(
+              getComputedStyle(document.documentElement)
+                .getPropertyValue("--s")
+                .trim()
+                .split(" ")[2]
+            ) // Hue argument
+          )
+          .hex();
+        cookies.set("primaryColor", primary, { path: "/" });
+        cookies.set("secondaryColor", secondary, { path: "/" });
+
       }
     },
-    [theme,cookies]
+    [theme, cookies]
   );
 
   return (

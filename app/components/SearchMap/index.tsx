@@ -23,9 +23,13 @@ export default function SearchMap({  }: Props) {
       type: "city",
       importance: 0.7960286135601556
     };
+    const initialPlaces = cookies.get('selectedItems') &&cookies.get('selectedItems') !== "undefined"
+    ? JSON.parse(cookies.get('selectedItems')!)
+    :[initialPlace]
+  const [selectedItems, setSelectedItems] = useState<Place[]>(initialPlaces);
+  const [primaryColor, setPrimaryColor] = useState<string>(cookies.get("primaryColor") ||"blue");
+  const [secondaryColor, setSecondaryColor] = useState<string>(cookies.get("secondaryColor") ||"green");
 
-  const [selectedItems, setSelectedItems] = useState<Place[]>([initialPlace]);
-  const [primaryColor, setPrimaryColor] = useState<string>(cookies.get("primaryColor") ||"red");
   const [lastSelectedItem, setLastSelectedItem] = useState<Place>(initialPlace);
 
   const handleEffect = () => {
@@ -40,7 +44,7 @@ export default function SearchMap({  }: Props) {
   return (
     <div className="grid  w-full  relative ">
       <CityAutocomplete selectedItems={selectedItems} setSelectedItems={setSelectedItems} />
-      <MapComponent lat={lastSelectedItem?.lat} lon={lastSelectedItem?.lon} display_name={lastSelectedItem?.display_name} primaryColor={primaryColor} />
+      <MapComponent lat={lastSelectedItem?.lat} lon={lastSelectedItem?.lon} display_name={lastSelectedItem?.display_name} primaryColor={primaryColor} secondaryColor={secondaryColor} pins={selectedItems} />
     </div>
   );
 }

@@ -11,7 +11,6 @@ export default function CityAutocomplete({ selectedItems, setSelectedItems }: Pr
   const [inputItems, setInputItems] = useState<Place[]>([]);
   const [inputValue, setInputValue] = useState(selected );
   const [isLoading, setIsLoading] = useState(false);
-  // const [selectedItems, setSelectedItems] = useState<Place[]>([]);
 
   // Create debounced function outside of your event handler
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -52,16 +51,10 @@ export default function CityAutocomplete({ selectedItems, setSelectedItems }: Pr
     },
     [inputValue]
   );
-  // useEffect(
-  //   () => {
-  //     console.log("selectedItem", selectedItems);
-  //     cookies.set("selectedItems", JSON.stringify(selectedItems), { path: "/" });
-  //   },
-  //   [selectedItems, cookies]
-  // );
+ 
   return (
     <div className="absolute top-4 w-full md:max-w-xs max-w-[280px] p-2 h-max z-10 card shadow-lg  backdrop-blur-lg m-2">
-      <div className="prose md:prose-lg prose-base text-base-content   ">
+      <div className="prose md:prose-lg prose-base text-primary-content   ">
         <label className="label" htmlFor="place">
           <span className="flex gap-2 items-center">
             {" "}
