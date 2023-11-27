@@ -25,9 +25,9 @@ export default function RootLayout({
      
          <CookiesProvider>
          <Header/>
-         <CookieBanner/>
-          <main className='flex-grow  grid'> 
-             
+        
+          <main className='flex-grow  grid relative'> 
+          <CookieBanner/>
               {children}
           </main>
           <Footer/>

@@ -80,7 +80,7 @@ export default function CityAutocomplete({ selectedItems, setSelectedItems, last
 
  
   return (
-    <div className=" w-full md:max-w-xs max-w-[280px] p-2 h-max z-10 card shadow-lg  backdrop-blur-md backdrop-brightness-75	hover:backdrop-brightness-50 ">
+    <div className=" w-full max-w-xs  p-2 h-max z-10 card shadow-lg  backdrop-blur-md backdrop-brightness-75	hover:backdrop-brightness-50 ">
       <div className="prose md:prose-lg prose-base text-neutral-content   ">
         <label className="label" htmlFor="place">
           <span className="flex gap-2 items-center">
