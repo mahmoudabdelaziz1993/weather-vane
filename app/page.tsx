@@ -1,10 +1,9 @@
-import Image from "next/image";
-import CityAutocomplete from "./components/CityAutocomplete";
+import dynamic from 'next/dynamic'
+
+const SearchMap = dynamic(() => import("./components/SearchMap"), { ssr: false });
 
 export default function Home() {
   return (
-    <div className="grid  w-full p-2 ">
-      <CityAutocomplete />
-    </div>
+    <SearchMap/>
   );
 }

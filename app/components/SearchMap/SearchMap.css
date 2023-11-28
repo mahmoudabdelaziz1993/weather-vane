@@ -1,0 +1,4 @@
+.card.image-full:before{
+    content: none !important;
+    background-color: transparent !important;
+}
