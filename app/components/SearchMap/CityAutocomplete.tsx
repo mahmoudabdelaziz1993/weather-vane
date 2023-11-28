@@ -78,9 +78,8 @@ export default function CityAutocomplete({ selectedItems, setSelectedItems, last
     [inputValue, memoizedFetch]
   );
 
- 
   return (
-    <div className=" w-full md:max-w-xs max-w-[280px] p-2 h-max z-10 card shadow-lg  backdrop-blur-md backdrop-brightness-75	hover:backdrop-brightness-50 ">
+    <div className=" w-full max-w-xs  p-2 h-max z-10 card shadow-lg  backdrop-blur-md backdrop-brightness-75	hover:backdrop-brightness-50 ">
       <div className="prose md:prose-lg prose-base text-neutral-content   ">
         <label className="label" htmlFor="place">
           <span className="flex gap-2 items-center">
@@ -110,27 +109,33 @@ export default function CityAutocomplete({ selectedItems, setSelectedItems, last
           className="input input-bordered input-primary bg-base-200 text-base-content w-full max-w-xs"
         />
       </div>
-      {isOpen && (
-        <ul
-          {...getMenuProps({ ref }, { suppressRefError: true })}
-          className=" mt-2 menu bg-base-200 text-base-content w-full max-w-xs  max-h-40 overflow-hidden overflow-y-auto flex-nowrap rounded-box gap-2 p-2 "
-        >
-          {isLoading && (
-            <li>
-              <a>
-                <span className="loading loading-dots loading-md text-primary" />
-              </a>
+
+      <ul
+        aria-label="City results"
+        className={` mt-2 menu bg-base-200 text-base-content w-full max-w-xs  max-h-40 overflow-hidden overflow-y-auto flex-nowrap rounded-box gap-2 p-2 ${
+          isOpen ? "" : "hidden"
+        }`}
+        ref={ref}
+        {...getMenuProps()}
+      >
+        {!isOpen && null}
+        {isOpen &&
+          inputItems.length > 0 &&
+          !isLoading &&
+          inputItems.map((item, index) => (
+            <li key={item.place_id} {...getItemProps({ item, index })}>
+              <a className={`${highlightedIndex === index ? "active" : ""}`}> {item.display_name}</a>
             </li>
-          )}
-          {inputItems.length > 0 &&
-            !isLoading &&
-            inputItems.map((item, index) => (
-              <li key={item.display_name} {...getItemProps({ item, index })} >
-                <a key={`${item.place_id}`} className={`${highlightedIndex === index ? "active" : ""}`}> {item.display_name}</a>
-              </li>
-            ))}
-        </ul>
-      )}
+          ))}
+
+        {isOpen && isLoading && (
+          <li key={"loading"}>
+            <a>
+              <span className="loading loading-dots loading-md text-primary" />
+            </a>
+          </li>
+        )}
+      </ul>
     </div>
   );
 }

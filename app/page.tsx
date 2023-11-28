@@ -1,5 +1,6 @@
+import dynamic from 'next/dynamic'
 
-import SearchMap from "./components/SearchMap";
+const SearchMap = dynamic(() => import("./components/SearchMap"), { ssr: false });
 
 export default function Home() {
   return (
