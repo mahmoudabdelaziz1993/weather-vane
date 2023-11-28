@@ -16,7 +16,8 @@
     "next-client-cookies": "^1.1.0",
     "react": "^18",
     "react-bingmaps": "^3.6.1",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "swr": "^2.2.4"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",

@@ -5,6 +5,7 @@ import React, { useEffect, useState, useCallback, useMemo } from "react";
 import CityAutocomplete from "./CityAutocomplete";
 import MapComponent from "./BingMap";
 import  './SearchMap.css'
+import WeatherPanel from "./WeatherPanel";
 type Props = {};
 
 // Memoized versions of CityAutocomplete and MapComponent components
@@ -99,9 +100,9 @@ export default function SearchMap({}: Props) {
   <figure className="before:bg-transparent ">
     <MemoizedMapComponent lat={lastSelectedItem?.lat} lon={lastSelectedItem?.lon} display_name={lastSelectedItem?.display_name} primaryColor={primaryColor} secondaryColor={secondaryColor} pins={selectedItems} />
 </figure>
-  <div className="card-body ">
+  <div className="card-body p-2 ">
   <MemoizedCityAutocomplete selectedItems={selectedItems} setSelectedItems={setSelectedItems} lastSelectedItem={lastSelectedItem} setLastSelectedItem={setLastSelectedItem} />
-
+<WeatherPanel/>
   </div>
 </div>
     </div>);}
